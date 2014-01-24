@@ -1,7 +1,30 @@
-page
-====
+# PaGe
 
-Bi-directional template language providing parser and generator capabilities.
+A Bi-directional template language providing Parser and Generator capabilities.
+
+## Syntax
+
+```
+templates ::=
+| (macros | environment | <text - {"@", "|]"}>)*
+
+macros ::=
+| "@MACRO" namedOrNot "[|" <template> "|]"
+| "@SET" namedOrNot "[|" <template> "|]"
+| "@USE" namedOrNot "[|" <template> "|]"
+
+environment ::=
+| "@REP" separatorOrNot namedOrNot "[|" <template> "|]"
+| "@VAL" namedOrNot "[|" <template> "|]"
+| "@OPT" namedOrNot "[|" <template> "|]"
+| "@OR" namedOrNot ("[|" <template> "|]")+
+
+named ::=
+| namedOrNot
+
+separatorOrNot ::=
+| ("(" (<text - ")">) ")")?
+```
 
 ## License
 
