@@ -29,7 +29,7 @@ separator? ::=
 | "(" <text - {")"}> ")"
 ```
 
-## Example of generation
+## Example of Generation
 
 Consider the following JSON fragment
 
@@ -59,6 +59,33 @@ John Doe is interested by:
  - Reading and
  - Mountain Biking and
  - Hacking
+```
+
+## Example of Extraction
+
+Consider the following fragment
+
+```
+John Doe is interested by:
+ - Reading and
+ - Hacking
+```
+
+and the following simple template.
+
+```html
+@VAL::name @VAL::last is interested by:
+@REP( and)::interests[| - @VAL|]
+```
+
+The extraction produces the following fragment:
+
+```
+{
+ "first": "John",
+ "last": "Doe",
+ "interests": [ "Reading", "Hacking" ]
+}
 ```
 
 ## License
