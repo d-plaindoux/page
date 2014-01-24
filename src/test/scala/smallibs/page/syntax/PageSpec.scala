@@ -96,7 +96,7 @@ object PageSpec extends Specification {
 
     "provides a anonymous repeatable with an implicit repeatable and a separator" in {
       val parsed = PageParser.parseAll(PageParser.template, "@REP(.)[|@REP(,)::value|]")
-      parsed.get mustEqual Repetition(None, Some("."), Some(Repetition(Some("value"), Some(","), None)))
+      parsed.get mustEqual Repetition(None, Some(Text(".")), Some(Repetition(Some("value"), Some(Text(",")), None)))
     }
 
     "provides an anonymous empty alternate" in {

@@ -44,6 +44,11 @@ object PageParser extends JavaTokenParsers {
       simplify
     }
 
+  private def separatorTemplate: Parser[Template] =
+    (separatorText | commonTemplate | separatorSpecial).* ^^ {
+      simplify
+    }
+
   private def commonTemplate: Parser[Template] =
     comment | macroDefinition | define | use | value | repetition | alternate | optional
 
@@ -59,6 +64,11 @@ object PageParser extends JavaTokenParsers {
 
   private def innerText: Parser[Template] =
     regex(new Regex("[^@|]+")) ^^ {
+      Text
+    }
+
+  private def separatorText: Parser[Template] =
+    regex(new Regex("[^@)]+")) ^^ {
       Text
     }
 
@@ -87,7 +97,7 @@ object PageParser extends JavaTokenParsers {
     }
 
   private def repetition: Parser[Template] =
-    ("@REP" ~> ("(" ~> regex(new Regex("[^)]+")) <~ ")").? ~ ("::" ~> ident).?) ~ (spaces ~> "[|" ~> innerTemplate <~ "|]").? ^^ {
+    ("@REP" ~> ("(" ~> separatorTemplate <~ ")").? ~ ("::" ~> ident).?) ~ (spaces ~> "[|" ~> innerTemplate <~ "|]").? ^^ {
       case s ~ v ~ t => Repetition(v, s, t)
     }
 
@@ -107,6 +117,11 @@ object PageParser extends JavaTokenParsers {
     }
 
   private def innerSpecial: Parser[Template] =
+    "@" ^^ {
+      Text
+    }
+
+  private def separatorSpecial: Parser[Template] =
     "@" ^^ {
       Text
     }

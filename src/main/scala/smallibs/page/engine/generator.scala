@@ -28,6 +28,7 @@ import smallibs.page.ast._
 class Engine(path: List[String], data: DataProvider, definitions: Map[String, Template]) {
 
   type Definitions = Map[String, Template]
+  type GenerationType = (Option[String], Definitions)
 
   def generate(template: Template): Try[Option[String]] =
     generateWithDefinitions(template) match {
@@ -35,7 +36,7 @@ class Engine(path: List[String], data: DataProvider, definitions: Map[String, Te
       case Success((s, _)) => Success(s)
     }
 
-  def generateWithDefinitions(template: Template): Try[(Option[String], Definitions)] = {
+  def generateWithDefinitions(template: Template): Try[GenerationType] = {
     template match {
       case NoTemplate =>
         Success(Some(""), definitions)
@@ -56,7 +57,9 @@ class Engine(path: List[String], data: DataProvider, definitions: Map[String, Te
           case (r, _) => (r, definitions)
         }
       case Repetition(None, sep, content) =>
-        generateWithDefinitions_repetition(sep, content.getOrElse(Value(None, None)))
+        generateWithDefinitions(sep getOrElse NoTemplate).flatMap {
+          (result) => generateWithDefinitions_repetition(result._1, content.getOrElse(Value(None, None)))
+        }
       case Repetition(Some(name), sep, content) => data get name match {
         case None =>
           Failure(new NoSuchElementException(data + ": " + name))
@@ -103,7 +106,7 @@ class Engine(path: List[String], data: DataProvider, definitions: Map[String, Te
     }
   }
 
-  def generateWithDefinitions_list(result: String, l: List[Template]): Try[(Option[String], Definitions)] =
+  def generateWithDefinitions_list(result: String, l: List[Template]): Try[GenerationType] =
     l match {
       case Nil => Success(Some(result), definitions)
       case e :: nl =>
@@ -115,7 +118,7 @@ class Engine(path: List[String], data: DataProvider, definitions: Map[String, Te
         }
     }
 
-  def generateWithDefinitions_repetition(sep: Option[String], template: Template): Try[(Option[String], Definitions)] = {
+  def generateWithDefinitions_repetition(sep: Option[String], template: Template): Try[GenerationType] = {
     def generateWithDefinitions_from_list(values: List[DataProvider], definitions: Definitions): List[String] =
       values match {
         case Nil => Nil
@@ -137,7 +140,7 @@ class Engine(path: List[String], data: DataProvider, definitions: Map[String, Te
     }
   }
 
-  def generateWithDefinitions_alternate(l: List[Template]): Try[(Option[String], Definitions)] =
+  def generateWithDefinitions_alternate(l: List[Template]): Try[GenerationType] =
     l match {
       case Nil =>
         Failure(new IllegalAccessException(path.reverse.toString))

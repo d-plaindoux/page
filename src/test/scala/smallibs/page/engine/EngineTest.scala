@@ -81,6 +81,18 @@ object EngineTest extends Specification {
       ) mustEqual Success(Some(" - Hello - World"))
     }
 
+    "provides a result with a named complex repeatable and a separator" in {
+      val engine = Engine(Provider.record(
+        "keys" ->
+          Provider.set(
+            Provider.record("name" -> Provider.constant("Hello")),
+            Provider.record("name" -> Provider.constant("World"))
+          )))
+      engine.generate(
+        Repetition(Some("keys"), Some(Text(" - ")), Some(Value(Some("name"), None)))
+      ) mustEqual Success(Some("Hello - World"))
+    }
+
     "provides a result with a named alternative" in {
       val engine = Engine(
         Provider.set(

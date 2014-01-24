@@ -11,7 +11,7 @@ template ::=
 macros ::=
 | "@MACRO" name? "[|" <template> "|]"
 | "@SET" name? "[|" <template> "|]"
-| "@GET" name? "[|" <template> "|]"
+| "@USE" name? "[|" <template> "|]"
 
 environment ::=
 | "@REP" separator? name? "[|" <template> "|]"
@@ -20,13 +20,13 @@ environment ::=
 | "@OR" name? ("[|" <template> "|]")+
 
 freeText ::=
-| <text - {"@", "|]"}>
+| <text>
 
 name ::=
 | "::" <ident>
 
 separator? ::=
-| "(" <text - {")"}> ")"
+| "(" <template> ")"
 ```
 
 ## Example of Generation
@@ -48,8 +48,10 @@ Consider the following JSON fragment
 and the following simple template.
 
 ```html
+@MACRO::newLine[|
+|]
 @VAL::name @VAL::last is interested by:
-@REP( and)::interests[| - @VAL|]
+@REP( and@USE::newLine)::interests[| - @VAL|]
 ```
 
 The generation produces the following simple result:
