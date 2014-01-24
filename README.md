@@ -6,12 +6,12 @@ A Bi-directional template language providing Parser and Generator capabilities.
 
 ```
 template ::=
-| (macros | environment | freeText)*
+| (definition| environment | freeText)*
 
-macros ::=
-| "@MACRO" name? "[|" <template> "|]"
-| "@SET" name? "[|" <template> "|]"
-| "@USE" name? "[|" <template> "|]"
+definition ::=
+| "@DEFINE" name "[|" <template> "|]"
+| "@SET" name "[|" <template> "|]"
+| "@USE" name "[|" <template> "|]"
 
 environment ::=
 | "@REP" separator? name? "[|" <template> "|]"
@@ -48,10 +48,10 @@ Consider the following JSON fragment
 and the following simple template.
 
 ```html
-@MACRO::newLine[|
+@DEFINE::CR[|
 |]
 @VAL::name @VAL::last is interested by:
-@REP( and@USE::newLine)::interests[| - @VAL|]
+@REP( and@USE::CR)::interests[| - @VAL|]
 ```
 
 The generation produces the following simple result:
@@ -76,10 +76,10 @@ John Doe is interested by:
 and the following simple template.
 
 ```html
-@MACRO::newLine[|
+@DEFINE::CR[|
 |]
 @VAL::name @VAL::last is interested by:
-@REP( and@USE::newLine)::interests[| - @VAL|]
+@REP( and@USE::CR)::interests[| - @VAL|]
 ```
 
 The extraction produces the following fragment:

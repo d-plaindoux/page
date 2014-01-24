@@ -73,7 +73,7 @@ object PageParser extends JavaTokenParsers {
     }
 
   private def macroDefinition: Parser[Template] =
-    ("@MACRO" ~> "::" ~> ident) ~ (spaces ~> "[|" ~> innerTemplate <~ "|]") <~ spaces ^^ {
+    ("@DEFINE" ~> "::" ~> ident) ~ (spaces ~> "[|" ~> innerTemplate <~ "|]") <~ spaces ^^ {
       case n ~ v => Macro(n, v)
     }
 
