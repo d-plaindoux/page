@@ -5,25 +5,28 @@ A Bi-directional template language providing Parser and Generator capabilities.
 ## Syntax
 
 ```
-templates ::=
-| (macros | environment | <text - {"@", "|]"}>)*
+template ::=
+| (macros | environment | freeText)*
 
 macros ::=
-| "@MACRO" namedOrNot "[|" <template> "|]"
-| "@SET" namedOrNot "[|" <template> "|]"
-| "@USE" namedOrNot "[|" <template> "|]"
+| "@MACRO" name? "[|" <template> "|]"
+| "@SET" name? "[|" <template> "|]"
+| "@GET" name? "[|" <template> "|]"
 
 environment ::=
-| "@REP" separatorOrNot namedOrNot "[|" <template> "|]"
-| "@VAL" namedOrNot "[|" <template> "|]"
-| "@OPT" namedOrNot "[|" <template> "|]"
-| "@OR" namedOrNot ("[|" <template> "|]")+
+| "@REP" separator? name? "[|" <template> "|]"
+| "@VAL" name? "[|" <template> "|]"
+| "@OPT" name? "[|" <template> "|]"
+| "@OR" name? ("[|" <template> "|]")+
 
-named ::=
-| namedOrNot
+freeText ::=
+| <text - {"@", "|]"}>
 
-separatorOrNot ::=
-| ("(" (<text - ")">) ")")?
+name ::=
+| "::" <ident>
+
+separator? ::=
+| "(" <text - {")"}> ")"
 ```
 
 ## License
