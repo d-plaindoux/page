@@ -76,8 +76,10 @@ John Doe is interested by:
 and the following simple template.
 
 ```html
+@MACRO::newLine[|
+|]
 @VAL::name @VAL::last is interested by:
-@REP( and)::interests[| - @VAL|]
+@REP( and@USE::newLine)::interests[| - @VAL|]
 ```
 
 The extraction produces the following fragment:
