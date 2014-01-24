@@ -50,7 +50,7 @@ and the following simple template.
 ```html
 @DEFINE::CR[|
 |]
-@VAL::name @VAL::last is interested by:
+@VAL::first @VAL::last is interested by:
 @REP( and@USE::CR)::interests[| - @VAL|]
 ```
 
@@ -78,7 +78,7 @@ and the following simple template.
 ```html
 @DEFINE::CR[|
 |]
-@VAL::name @VAL::last is interested by:
+@VAL::first @VAL::last is interested by:
 @REP( and@USE::CR)::interests[| - @VAL|]
 ```
 
