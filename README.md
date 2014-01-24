@@ -29,6 +29,38 @@ separator? ::=
 | "(" <text - {")"}> ")"
 ```
 
+## Example
+
+Consider the following JSON fragment
+
+```
+{
+ "first": "John",
+ "last": "Doe",
+ "age": 39,
+ "sex": "M",
+ "salary": 70000,
+ "registered": true,
+ "interests": [ "Reading", "Mountain Biking", "Hacking" ]
+}
+```
+
+and the following simple template.
+
+```html
+@VAL::name @VAL::last is interested by:
+@REP( and)::interests|[ - @VAL|]
+```
+
+The generation produces the following simple result:
+
+```
+John Doe is interested by:
+ - Reading and
+ - Mountain Biking and
+ - Hacking
+```
+
 ## License
 
 Copyright (C)2014 D. Plaindoux.
