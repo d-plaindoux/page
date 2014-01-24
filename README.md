@@ -29,7 +29,7 @@ separator? ::=
 | "(" <text - {")"}> ")"
 ```
 
-## Example
+## Example of generation
 
 Consider the following JSON fragment
 
@@ -49,7 +49,7 @@ and the following simple template.
 
 ```html
 @VAL::name @VAL::last is interested by:
-@REP( and)::interests|[ - @VAL|]
+@REP( and)::interests[| - @VAL|]
 ```
 
 The generation produces the following simple result:
